@@ -28,15 +28,20 @@ Client의 연결이 끊어지게 되면 관리하고 있던 Client 객체를 제
 ```java
 ...
 
-} catch (IOException e) {
-  try {
-    clients.remove(Client.this);
-    System.out.println(
-      "[receive: 클라이언트 통신 안 됨: " + socket.getRemoteSocketAddress() + "]"
-    );
-    socket.close();
-  } catch (IOException e1) {
-    e1.printStackTrace();
+  } catch (IOException e) {
+    try {
+      System.out.println(
+        "[receive: 클라이언트 통신 안 됨: " + socket.getRemoteSocketAddress() + "]"
+      );
+      clients.remove(Client.this);
+      quit();
+    
+...
+
+void quit() {
+  for (Client client : clients) {
+    client.send("*** " + name + "님이 나가셨습니다. ***");
   }
 }
+
 ```
